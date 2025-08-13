@@ -1,103 +1,169 @@
 <!DOCTYPE html>
-
 <html lang="es">
-  <head>
-    <meta charset="UFT-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vidrio y Aluminio Gomez</title>
-    <link rel="stylesheet" href="reset.css" />
-    <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidrio y Aluminio Gomez</title>
 
-  <body>
-    <header>
-      <div class="caja">
-        <h1><img src="imagenes/logo.png" style="width: 50px; height: auto;"/></h1>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 
-        <nav>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="productos.html">Productos</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
-          </ul>
-        </nav>
+  <style>
+    /* Estilos responsivos */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .video {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 */
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+      margin: 20px auto;
+    }
+
+    .video iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    @media (max-width: 768px) {
+      .caja nav ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        padding: 0;
+      }
+
+      .contenidoDiferenciales {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .imagenDiferencial {
+        margin-top: 20px;
+        width: 100%;
+      }
+
+      .utensilios {
+        width: 100%;
+        margin: 20px auto;
+      }
+
+      .tituloPrincipal {
+        font-size: 1.4em;
+        text-align: center;
+      }
+
+      .mapaContenido iframe {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="caja">
+      <h1>
+        <img src="imagenes/logo.png" style="width: 50px; height: auto;" />
+      </h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <img class="banner" src="banner.jpg" alt="Banner principal" />
+
+  <main>
+    <section class="principal">
+      <h2 class="tituloPrincipal">Sobre Vidrio y Aluminio Gomez</h2>
+      <img class="utensilios" src="utensilios[1].jpg" alt="utensilios de un barbero">
+
+      <p>
+        Ubicada en San Pablo Autopan,
+        <strong>Soluciones en Vidrio y Aluminio Gomez</strong> trae para el mercado lo
+        mejor para su hogar y negocio. Fundada en 2008, cuenta con cancelería de aluminio, fachadas y sistemas de cristal templado, entre otras cosas. 
+      </p>
+
+      <p id="mision">
+        <em>
+          Nuestra misión es:
+          <strong>"Proporcionar eficiencia, economía y calidad a nuestros clientes".</strong>
+        </em>
+      </p>
+
+      <p>
+        Ofrecemos profesionales experimentados que están constantemente
+        observando los cambios y movimiento en el mundo de la cancelería, para así
+        ofrecer a nuestros clientes las últimas tendencias. La constante actualización
+        por parte de nuestros trabajadores nos hace brindar excelencia y agilidad, garantizando calidad y
+        satisfacción.
+      </p>
+    </section>
+
+    <section class="mapa">
+      <h3 class="tituloPrincipal">Nuestra Ubicación</h3>
+      <p>Nuestro establecimiento está ubicado en San Pablo Autopan</p>
+      <div class="mapaContenido">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!4v1755106762200!6m8!1m7!1sKm4gWmhJ6GTjfPTvIZet5g!2m2!1d19.37321425248475!2d-99.65734110169382!3f208.08353!4f0!5f0.7820865974627469" 
+          width="100%" 
+          height="300" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
       </div>
-    </header>
+    </section>
 
-    <img class="banner" src="banner.jpg" />
+    <section class="diferenciales">
+      <h3 class="tituloPrincipal">Nuestro Distintivo</h3>
 
-    <main>
+      <div class="contenidoDiferenciales">
+        <ul class="listaDiferenciales">
+          <li class="items">Atención personalizada</li>
+          <li class="items">Presupuestos flexibles</li>
+          <li class="items">Localización</li>
+          <li class="items">Profesionales calificados</li>
+          <li class="items">Puntualidad</li>
+          <li class="items">Limpieza e higiene</li>
+          <li class="items">Trabajos garantizados</li>
+        </ul>
+        <img src="diferenciales.jpg" class="imagenDiferencial" alt="imagen de trabajos" />
+      </div>
 
-      
-      <section class="principal">
-        <h2 class="tituloPrincipal">Sobre Vidrio y Aluminio Gomez</h2>
-        <img class="utensilios"src="utensilios[1].jpg"alt="utensilios de un barbero">
+      <div class="video">
+        <iframe 
+          src="https://www.youtube.com/embed/ZgiRVMIGC1g?si=RLGlu-uzErp_v7s-" 
+          title="YouTube video player" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+  </main>
 
-        <p>
-          Ubicada en San Pablo Autopan,
-          <strong>Soluciones en Vidrio y Aluminio Gomez </strong>trae para el mercado lo
-          mejor para su hogar y negocio. Fundada en 2008, soluciones en vidrio y aluminio 
-          cuenta con canceleria de aluminio, fachadas y sistemas de cristal templado, entre otras cosas. 
-        </p>
-
-        <p id="mision">
-          <em
-            >Nuestra misión es:
-            <strong
-              >"Proporcionar eficiencia, economia y calidad a nuestros
-              clientes".</strong
-            ></em
-          >
-        </p>
-
-        <p>
-          Ofrecemos profesionales experimentados que están constantemente
-          observando los cambios y movimiento en el mundo de la canceleria, para así
-          ofrecer a nuestros clientes las últimas tendencias. La constante actualizacion
-          por parte de nuestros trabajadores, nos hace brindarle excelencia y agilidad, garantizando calidad y
-          satisfacción de nuestros clientes.
-        </p>
-      </section>
-
-      <section class="mapa">
-        <h3 class="tituloPrincipal">Nuestra Ubicacion</h3>
-        <p>Nuestro establecimiento esta ubicado en San PabloAutopan</p>
-        <div class="mapaContenido">
-          <iframe src="https://www.google.com/maps/embed?pb=!4v1755106762200!6m8!1m7!1sKm4gWmhJ6GTjfPTvIZet5g!2m2!1d19.37321425248475!2d-99.65734110169382!3f208.08353!4f0!5f0.7820865974627469" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-
-      </section>
-
-      <section class="diferenciales">
-        <h3 class="tituloPrincipal">Nuestro Distintivo</h3>
-
-        <div class="contenidoDiferenciales">
-          <ul class="listaDiferenciales">
-            <li class="items">Atencion personalizada</li>
-            <li class="items">Presupuestos Flexibles</li>
-            <li class="items">Localizacion</li>
-            <li class="items">Profesionales calificados</li>
-            <li class="items">Puntualidad</li>
-            <li class="items">Limpieza e Higiene</li>
-            <li class="items">Trabajos Garantizados</li>
-            
-          </ul><img src="diferenciales.jpg" class="imagenDiferencial"class="imagenDiferencial">
-      
-        </div>
-        <div class="video">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/ZgiRVMIGC1g?si=RLGlu-uzErp_v7s-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-
-
-      </section>
- 
-     
-    </main>
-
-    <footer>
-      <img src="imagenes/logo-blanco.png" />
-      <p>Copiright Todo el Material expuesto es propiedad de Vidrio y Aluminio Gomez 2025</p>
-    </footer>
-  </body>
+  <footer>
+    <img src="imagenes/logo-blanco.png" alt="Logo blanco" />
+    <p>Copyright: Todo el material expuesto es propiedad de Vidrio y Aluminio Gomez 2025</p>
+  </footer>
+</body>
 </html>
+
