@@ -52,7 +52,7 @@
       display: block;
       width: 100%;
       padding: 15px;
-      background-color: #333;
+      background-color: #25D366;
       color: #fff;
       font-size: 18px;
       border: none;
@@ -61,13 +61,64 @@
     }
 
     .btn:hover {
-      background-color: #555;
+      background-color: #1ebe5d;
     }
 
     @media screen and (max-width: 600px) {
       .form-row {
         flex-direction: column;
       }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 40px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #333;
+      color: white;
+      margin-top: 40px;
+    }
+
+    footer img {
+      width: 100px;
+      margin-bottom: 10px;
+    }
+
+    header .caja {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -91,23 +142,22 @@
 
   <main>
     <div class="container">
-      <h1>Contáctanos</h1>
-      <form target="_blank" action="https://formsubmit.co/riccardotflores@gmail.com" method="POST">
-      <input type="hidden" name="_next" value="https://riccardotflores.github.io/vidrioyaluminogomez/index.html">
+      <h1>Contáctanos por WhatsApp</h1>
+      <form id="formulario">
         <div class="form-group">
           <div class="form-row">
             <div class="col">
-              <input type="text" name="name" class="form-control" placeholder="Nombre Completo" required>
+              <input type="text" id="nombre" class="form-control" placeholder="Tu nombre" required>
             </div>
             <div class="col">
-              <input type="email" name="email" class="form-control" placeholder="Correo Electrónico" required>
+              <input type="email" id="email" class="form-control" placeholder="Tu correo" required>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <textarea placeholder="Escribe tu mensaje aquí..." class="form-control" name="message" rows="10" required></textarea>
+          <textarea id="mensaje" class="form-control" placeholder="Escribe tu mensaje aquí..." rows="10" required></textarea>
         </div>
-        <button type="submit" class="btn">Enviar Mensaje</button>
+        <button type="submit" class="btn">Enviar a WhatsApp</button>
       </form>
     </div>
 
@@ -139,6 +189,22 @@
     <img src="imagenes/logo-blanco.png" alt="logo de vidrio gomez" />
     <p>Copyright Vidrio y Aluminio Gomez 2025</p>
   </footer>
+
+  <script>
+    document.getElementById("formulario").addEventListener("submit", function(e){
+      e.preventDefault();
+      let nombre = document.getElementById("nombre").value;
+      let email = document.getElementById("email").value;
+      let mensaje = document.getElementById("mensaje").value;
+
+      let url = "https://wa.me/527291022383?text="
+              + "Hola, mi nombre es: " + encodeURIComponent(nombre) + "%0A"
+              + "Mi correo es: " + encodeURIComponent(email) + "%0A"
+              + "Mensaje: " + encodeURIComponent(mensaje);
+
+      window.open(url, '_blank');
+    });
+  </script>
 </body>
 </html>
 
