@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 
   <style>
-    /* Estilos responsivos */
+    /* Estilos generales */
     img {
       max-width: 100%;
       height: auto;
@@ -24,16 +24,11 @@
     }
 
     .video-frame {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      width: 100%;
     }
 
     .video-frame iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       border: none;
@@ -164,11 +159,11 @@
         <img src="diferenciales.jpg" class="imagenDiferencial" alt="imagen de trabajos" />
       </div>
 
-      <!-- Riel de Videos -->
+      <!-- Carrusel de videos -->
       <div class="video">
         <div class="video-frame">
           <iframe id="videoPlayer"
-            src="https://www.youtube.com/embed/yk3RDQa4P0vvzm7k"
+            src="https://www.youtube.com/embed/ZgiRVMIGC1g"
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen>
@@ -189,14 +184,9 @@
 
   <script>
     const videoUrls = [
-      "https://www.youtube.com/embed/kyEPumuStOU",
-      "https://www.youtube.com/embed/MdQpVLC7m30",
-      "https://www.youtube.com/embed/168GKDKl9dI",
-      "https://www.youtube.com/embed/8cdLwZS9nq4?",
-      "https://www.youtube.com/embed/72tXBetuMss?"
-      
-      
-      
+      "https://www.youtube.com/embed/ZgiRVMIGC1g",
+      "https://www.youtube.com/embed/MdQpVLC7m30", // Shorts convertido
+      "https://www.youtube.com/embed/BtN-goy9VOY"
     ];
 
     let videoIndex = 0;
