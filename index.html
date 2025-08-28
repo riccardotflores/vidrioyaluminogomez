@@ -18,21 +18,36 @@
     }
 
     .video {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 */
-      height: 0;
-      overflow: hidden;
-      max-width: 100%;
-      margin: 20px auto;
+      max-width: 800px;
+      margin: 30px auto;
+      text-align: center;
     }
 
-    .video iframe {
+    .video-frame {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .video-frame iframe {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      border: 0;
+      border: none;
+    }
+
+    .video-controles {
+      margin-top: 10px;
+    }
+
+    .video-controles button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 16px;
+      cursor: pointer;
     }
 
     @media (max-width: 768px) {
@@ -149,13 +164,20 @@
         <img src="diferenciales.jpg" class="imagenDiferencial" alt="imagen de trabajos" />
       </div>
 
+      <!-- Riel de Videos -->
       <div class="video">
-        <iframe 
-          src="https://www.youtube.com/embed/ZgiRVMIGC1g?si=RLGlu-uzErp_v7s-" 
-          title="YouTube video player" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-          allowfullscreen>
-        </iframe>
+        <div class="video-frame">
+          <iframe id="videoPlayer"
+            src="https://www.youtube.com/embed/ZgiRVMIGC1g"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="video-controles">
+          <button onclick="cambiarVideo(-1)">Anterior</button>
+          <button onclick="cambiarVideo(1)">Siguiente</button>
+        </div>
       </div>
     </section>
   </main>
@@ -164,6 +186,29 @@
     <img src="imagenes/logo-blanco.png" alt="Logo blanco" />
     <p>Copyright: Todo el material expuesto es propiedad de Vidrio y Aluminio Gomez 2025</p>
   </footer>
+
+  <script>
+    const videoUrls = [
+      "https://www.youtube.com/embed/kyEPumuStOU",
+      "https://www.youtube.com/embed/MdQpVLC7m30",
+      "https://www.youtube.com/embed/168GKDKl9dI",
+      "https://www.youtube.com/embed/8cdLwZS9nq4?",
+      "https://www.youtube.com/embed/72tXBetuMss?"
+      
+      
+      
+    ];
+
+    let videoIndex = 0;
+    const videoPlayer = document.getElementById('videoPlayer');
+
+    function cambiarVideo(direccion) {
+      videoIndex += direccion;
+      if (videoIndex < 0) videoIndex = videoUrls.length - 1;
+      if (videoIndex >= videoUrls.length) videoIndex = 0;
+      videoPlayer.src = videoUrls[videoIndex];
+    }
+  </script>
 </body>
 </html>
 
