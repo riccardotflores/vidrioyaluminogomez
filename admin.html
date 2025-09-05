@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Vidrio y Aluminio Gomez</title>
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: "Montserrat", sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    #login, #panel { max-width: 600px; margin: 0 auto; }
+    input { width: 100%; padding: 10px; margin: 10px 0; }
+    button { padding: 10px 20px; cursor: pointer; }
+    .comentario { background: #eee; padding: 10px; margin: 10px 0; display: flex; justify-content: space-between; border-radius: 5px; }
+    .comentario button { background: red; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<h1>Panel de Administrador</h1>
+
+<div id="login">
+  <h2>Iniciar sesión</h2>
+  <input type="email" id="email" placeholder="Correo electrónico">
+  <input type="password" id="password" placeholder="Contraseña">
+  <button id="btnLogin">Ingresar</button>
+  <p id="error" style="color:red;"></p>
+</div>
+
+<div id="panel" style="display:none;">
+  <h2>Comentarios</h2>
+  <div id="listaComentarios"></div>
+  <button id="btnLogout">Cerrar sesión</button>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // 🔹 Configuración Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyAK5lHln3Xa-OjzO7QoE3U2THxJt59A7vE",
+    authDomain: "vidrio-aluminio-gomez.firebaseapp.com",
+    projectId: "vidrio-aluminio-gomez",
+    storageBucket: "vidrio-aluminio-gomez.firebasestorage.app",
+    messagingSenderId: "8738704393",
+    appId: "1:8738704393:web:d40335060e366f01a47cd8"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  const loginDiv = document.getElementById("login");
+  const panelDiv = document.getElementById("panel");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const btnLogin = document.getElementById("btnLogin");
+  const btnLogout = document.getElementById("btnLogout");
+  const listaComentarios = document.getElementById("listaComentarios");
+  const errorP = document.getElementById("error");
+
+  // 🔹 Login
+  btnLogin.addEventListener("click", () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        loginDiv.style.display = "none";
+        panelDiv.style.display = "block";
+        cargarComentarios();
+      })
+      .catch((err) => {
+        errorP.textContent = err.message;
+      });
+  });
+
+  // 🔹 Logout
+  btnLogout.addEventListener("click", () => {
+    auth.signOut().then(() => {
+      loginDiv.style.display = "block";
+      panelDiv.style.display = "none";
+    });
+  });
+
+  // 🔹 Cargar comentarios y permitir eliminarlos
+  function cargarComentarios() {
+    db.collection("comentarios")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snap) => {
+        listaComentarios.innerHTML = "";
+        snap.forEach((doc) => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.className = "comentario";
+
+          const p = document.createElement("p");
+          p.textContent = data.texto;
+
+          const btn = document.createElement("button");
+          btn.textContent = "Eliminar";
+          btn.onclick = async () => {
+            if (confirm("¿Eliminar este comentario?")) {
+              await db.collection("comentarios").doc(doc.id).delete();
+            }
+          };
+
+          div.appendChild(p);
+          div.appendChild(btn);
+          listaComentarios.appendChild(div);
+        });
+      });
+  }
+
+  // 🔹 Mantener sesión activa
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      loginDiv.style.display = "none";
+      panelDiv.style.display = "block";
+      cargarComentarios();
+    } else {
+      loginDiv.style.display = "block";
+      panelDiv.style.display = "none";
+    }
+  });
+</script>
+</body>
+</html>
+

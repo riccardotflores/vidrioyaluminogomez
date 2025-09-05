@@ -10,9 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 
   <style>
-    img { max-width: 100%; height: auto; display: block; }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
 
-    /* 🔹 Comentarios integrados en banner */
+    /* 🔹 Sección comentarios sobre banner */
     .comentarios-overlay {
       position: absolute;
       top: 15%;
@@ -26,7 +30,7 @@
       color: white;
       padding: 10px;
       border-radius: 8px;
-      z-index: 500; /* debajo del menú */
+      z-index: 500;
     }
     .comentario {
       background: rgba(255, 255, 255, 0.1);
@@ -37,16 +41,34 @@
       justify-content: space-between;
       align-items: center;
     }
-    .comentario p { margin: 0; flex: 1; }
-    .comentario button {
-      background: red; color: white; border: none;
-      cursor: pointer; padding: 3px 6px; border-radius: 4px; margin-left: 10px;
+    .comentario p {
+      margin: 0;
+      flex: 1;
     }
-    textarea { width: 100%; margin-top: 10px; }
-    #formComentario button { margin-top: 5px; padding: 5px 10px; cursor: pointer; }
+    .comentario button {
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 3px 6px;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+    textarea {
+      width: 100%;
+      margin-top: 10px;
+    }
+    #formComentario button {
+      margin-top: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
 
     /* 🔹 El menú siempre visible arriba */
-    header { position: relative; z-index: 1000; }
+    header {
+      position: relative;
+      z-index: 1000;
+    }
   </style>
 </head>
 
@@ -84,20 +106,17 @@
     <section class="principal">
       <h2 class="tituloPrincipal">Sobre Vidrio y Aluminio Gomez</h2>
       <img class="utensilios" src="utensilios[1].jpg" alt="utensilios de un barbero">
-
       <p>
         Ubicada en San Pablo Autopan,
         <strong>Soluciones en Vidrio y Aluminio Gomez</strong> trae para el mercado lo
         mejor para su hogar y negocio. Fundada en 2008, cuenta con cancelería de aluminio, fachadas y sistemas de cristal templado, entre otras cosas. 
       </p>
-
       <p id="mision">
         <em>
           Nuestra misión es:
           <strong>"Proporcionar eficiencia, economía y calidad a nuestros clientes".</strong>
         </em>
       </p>
-
       <p>
         Ofrecemos profesionales experimentados que están constantemente
         observando los cambios y movimiento en el mundo de la cancelería, para así
@@ -125,7 +144,6 @@
 
     <section class="diferenciales">
       <h3 class="tituloPrincipal">Nuestro Distintivo</h3>
-
       <div class="contenidoDiferenciales">
         <ul class="listaDiferenciales">
           <li class="items">Atención personalizada</li>
@@ -149,9 +167,10 @@
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 
   <script>
-    // 🔹 Configuración de Firebase
+    // 🔹 Configuración Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAK5lHln3Xa-OjzO7QoE3U2THxJt59A7vE",
       authDomain: "vidrio-aluminio-gomez.firebaseapp.com",
@@ -163,12 +182,21 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    const auth = firebase.auth();
 
     const form = document.getElementById("formComentario");
     const input = document.getElementById("nuevoComentario");
     const lista = document.getElementById("listaComentarios");
 
-    // Enviar comentario
+    let currentUser = null;
+
+    // 🔹 Detectar estado de autenticación
+    auth.onAuthStateChanged(user => {
+      currentUser = user;
+      renderComentarios();
+    });
+
+    // 🔹 Enviar comentario
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const texto = (input.value || "").trim();
@@ -186,32 +214,38 @@
       }
     });
 
-    // Mostrar y eliminar comentarios en tiempo real
-    db.collection("comentarios")
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snap) => {
-        lista.innerHTML = "";
-        snap.forEach((doc) => {
-          const data = doc.data();
-          const div = document.createElement("div");
-          div.className = "comentario";
+    // 🔹 Mostrar comentarios y solo permitir eliminar al admin
+    function renderComentarios() {
+      db.collection("comentarios")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snap) => {
+          lista.innerHTML = "";
+          snap.forEach((doc) => {
+            const data = doc.data();
+            const div = document.createElement("div");
+            div.className = "comentario";
 
-          const p = document.createElement("p");
-          p.textContent = data.texto || "";
+            const p = document.createElement("p");
+            p.textContent = data.texto || "";
 
-          const btn = document.createElement("button");
-          btn.textContent = "❌";
-          btn.onclick = async () => {
-            if (confirm("¿Eliminar este comentario?")) {
-              await db.collection("comentarios").doc(doc.id).delete();
+            div.appendChild(p);
+
+            // Mostrar botón de eliminar solo si está logueado el admin
+            if (currentUser) {
+              const btn = document.createElement("button");
+              btn.textContent = "❌";
+              btn.onclick = async () => {
+                if (confirm("¿Eliminar este comentario?")) {
+                  await db.collection("comentarios").doc(doc.id).delete();
+                }
+              };
+              div.appendChild(btn);
             }
-          };
 
-          div.appendChild(p);
-          div.appendChild(btn);
-          lista.appendChild(div);
+            lista.appendChild(div);
+          });
         });
-      });
+    }
   </script>
 </body>
 </html>
