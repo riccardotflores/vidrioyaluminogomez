@@ -83,6 +83,60 @@
         height: 250px;
       }
     }
+
+    /* 🔹 Estilos comentarios */
+    .comentarios-overlay {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 600px;
+      max-height: 70%;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      z-index: 500; /* debajo del menú */
+    }
+    .comentario {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 5px;
+      margin: 5px 0;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .comentario p {
+      margin: 0;
+      flex: 1;
+    }
+    .comentario button {
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 3px 6px;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+    textarea {
+      width: 100%;
+      margin-top: 10px;
+    }
+    #formComentario button {
+      margin-top: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    /* 🔹 El menú siempre visible arriba */
+    header {
+      position: relative;
+      z-index: 1000;
+    }
   </style>
 </head>
 
@@ -97,12 +151,24 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="productos.html">Productos</a></li>
           <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="videos.html">Videos</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <img class="banner" src="banner.jpg" alt="Banner principal" />
+  <!-- Banner con comentarios integrados -->
+  <div style="position: relative;">
+    <img class="banner" src="banner.jpg" alt="Banner principal" />
+    <div class="comentarios-overlay">
+      <h3>Comentarios</h3>
+      <form id="formComentario">
+        <textarea id="nuevoComentario" placeholder="Escribe tu comentario..."></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+      <div id="listaComentarios"></div>
+    </div>
+  </div>
 
   <main>
     <section class="principal">
@@ -162,22 +228,6 @@
         </ul>
         <img src="diferenciales.jpg" class="imagenDiferencial" alt="imagen de trabajos" />
       </div>
-
-      <!-- Riel de Videos -->
-      <div class="video">
-        <div class="video-frame">
-          <iframe id="videoPlayer"
-            src="https://www.youtube.com/embed/4rd4vRHcSDM"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <div class="video-controles">
-          <button onclick="cambiarVideo(-1)">Anterior</button>
-          <button onclick="cambiarVideo(1)">Siguiente</button>
-        </div>
-      </div>
     </section>
   </main>
 
@@ -186,24 +236,73 @@
     <p>Copyright: Todo el material expuesto es propiedad de Vidrio y Aluminio Gomez 2025</p>
   </footer>
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
   <script>
-    const videoUrls = [
-      "https://www.youtube.com/embed/4rd4vRHcSDM", // Este es el primer video (Short)
-      "https://www.youtube.com/embed/MdQpVLC7m30",
-      "https://www.youtube.com/embed/168GKDKl9dI",
-      "https://www.youtube.com/embed/8cdLwZS9nq4",
-      "https://www.youtube.com/embed/72tXBetuMss"
-    ];
+    // 🔹 Aquí inserta el código de configuración de Firestore
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_DOMINIO.firebaseapp.com",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_PROJECT_ID.appspot.com",
+      messagingSenderId: "TU_MESSAGING_SENDER_ID",
+      appId: "TU_APP_ID"
+    };
 
-    let videoIndex = 0;
-    const videoPlayer = document.getElementById('videoPlayer');
+    // Inicializar Firebase + Firestore
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    function cambiarVideo(direccion) {
-      videoIndex += direccion;
-      if (videoIndex < 0) videoIndex = videoUrls.length - 1;
-      if (videoIndex >= videoUrls.length) videoIndex = 0;
-      videoPlayer.src = videoUrls[videoIndex];
-    }
+    const form = document.getElementById("formComentario");
+    const input = document.getElementById("nuevoComentario");
+    const lista = document.getElementById("listaComentarios");
+
+    // Enviar comentario
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const texto = (input.value || "").trim();
+      if (!texto) return;
+
+      try {
+        await db.collection("comentarios").add({
+          texto: texto,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        input.value = "";
+      } catch (err) {
+        console.error("Error al guardar:", err);
+        alert("No se pudo guardar el comentario. Intenta de nuevo.");
+      }
+    });
+
+    // Mostrar y eliminar comentarios
+    db.collection("comentarios")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snap) => {
+        lista.innerHTML = "";
+        snap.forEach((doc) => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.className = "comentario";
+
+          const p = document.createElement("p");
+          p.textContent = data.texto || "";
+
+          const btn = document.createElement("button");
+          btn.textContent = "❌";
+          btn.onclick = async () => {
+            if (confirm("¿Eliminar este comentario?")) {
+              await db.collection("comentarios").doc(doc.id).delete();
+            }
+          };
+
+          div.appendChild(p);
+          div.appendChild(btn);
+          lista.appendChild(div);
+        });
+      });
   </script>
 </body>
 </html>

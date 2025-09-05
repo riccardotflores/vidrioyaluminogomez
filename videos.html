@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Videos - Vidrio y Aluminio Gomez</title>
+
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .video-section {
+      max-width: 1000px;
+      margin: 80px auto 40px; /* 🔹 empuja hacia abajo para no tapar el menú */
+      text-align: center;
+      padding: 0 15px;
+    }
+
+    .video-section h3 {
+      margin-bottom: 25px;
+    }
+
+    /* Contenedor del carrusel */
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    /* Carrusel */
+    .carousel {
+      display: flex;
+      transition: transform 0.4s ease-in-out;
+    }
+
+    /* Cada tarjeta de video */
+    .carousel-item {
+      min-width: 380px;   /* 🔹 más ancho */
+      margin: 0 12px;
+      flex-shrink: 0;
+    }
+
+    .carousel-item iframe {
+      width: 100%;
+      height: 215px;      /* 🔹 más alto */
+      border: none;
+      border-radius: 8px;
+    }
+
+    /* Botones de navegación */
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.6);
+      border: none;
+      color: white;
+      font-size: 28px;
+      padding: 12px;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 50%;
+    }
+
+    .carousel-btn:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .carousel-btn.prev {
+      left: 10px;
+    }
+
+    .carousel-btn.next {
+      right: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .carousel-item {
+        min-width: 280px;
+      }
+
+      .carousel-item iframe {
+        height: 160px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="caja">
+      <h1>
+        <img src="imagenes/logo.png" style="width: 50px; height: auto;" />
+      </h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="videos.html">Videos</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="video-section">
+      <h3 class="tituloPrincipal">Nuestros Videos</h3>
+
+      <div class="carousel-container">
+        <button class="carousel-btn prev" onclick="moverCarrusel(-1)">&#10094;</button>
+        <div class="carousel" id="carousel">
+          <div class="carousel-item">
+            <iframe src="https://www.youtube.com/embed/4rd4vRHcSDM" allowfullscreen></iframe>
+          </div>
+          <div class="carousel-item">
+            <iframe src="https://www.youtube.com/embed/MdQpVLC7m30" allowfullscreen></iframe>
+          </div>
+          <div class="carousel-item">
+            <iframe src="https://www.youtube.com/embed/168GKDKl9dI" allowfullscreen></iframe>
+          </div>
+          <div class="carousel-item">
+            <iframe src="https://www.youtube.com/embed/8cdLwZS9nq4" allowfullscreen></iframe>
+          </div>
+          <div class="carousel-item">
+            <iframe src="https://www.youtube.com/embed/72tXBetuMss" allowfullscreen></iframe>
+          </div>
+        </div>
+        <button class="carousel-btn next" onclick="moverCarrusel(1)">&#10095;</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <img src="imagenes/logo-blanco.png" alt="Logo blanco" />
+    <p>Copyright: Todo el material expuesto es propiedad de Vidrio y Aluminio Gomez 2025</p>
+  </footer>
+
+  <script>
+    const carousel = document.getElementById("carousel");
+    let scrollAmount = 0;
+
+    function moverCarrusel(direccion) {
+      const itemWidth = carousel.querySelector(".carousel-item").offsetWidth + 24; // ancho + margen
+      scrollAmount += direccion * itemWidth;
+
+      if (scrollAmount < 0) scrollAmount = 0;
+      if (scrollAmount > carousel.scrollWidth - carousel.offsetWidth) {
+        scrollAmount = carousel.scrollWidth - carousel.offsetWidth;
+      }
+
+      carousel.style.transform = `translateX(-${scrollAmount}px)`;
+    }
+  </script>
+</body>
+</html>
+
