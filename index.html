@@ -16,75 +16,7 @@
       display: block;
     }
 
-    .video {
-      max-width: 800px;
-      margin: 30px auto;
-      text-align: center;
-    }
-
-    .video-frame {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-    }
-
-    .video-frame iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .video-controles {
-      margin-top: 10px;
-    }
-
-    .video-controles button {
-      padding: 10px 20px;
-      margin: 0 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      .caja nav ul {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-        padding: 0;
-      }
-
-      .contenidoDiferenciales {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .imagenDiferencial {
-        margin-top: 20px;
-        width: 100%;
-      }
-
-      .utensilios {
-        width: 100%;
-        margin: 20px auto;
-      }
-
-      .tituloPrincipal {
-        font-size: 1.4em;
-        text-align: center;
-      }
-
-      .mapaContenido iframe {
-        height: 250px;
-      }
-    }
-
-    /* 🔹 Estilos comentarios */
+    /* 🔹 Comentarios sobre el banner */
     .comentarios-overlay {
       position: absolute;
       top: 15%;
@@ -98,7 +30,7 @@
       color: white;
       padding: 10px;
       border-radius: 8px;
-      z-index: 500; /* debajo del menú */
+      z-index: 500;
     }
     .comentario {
       background: rgba(255, 255, 255, 0.1);
@@ -236,39 +168,36 @@
     <p>Copyright: Todo el material expuesto es propiedad de Vidrio y Aluminio Gomez 2025</p>
   </footer>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <!-- 🔹 Firebase modular -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  <script>
-    // 🔹 Aquí inserta el código de configuración de Firestore
     const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_DOMINIO.firebaseapp.com",
-      projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_PROJECT_ID.appspot.com",
-      messagingSenderId: "TU_MESSAGING_SENDER_ID",
-      appId: "TU_APP_ID"
+      apiKey: "AIzaSyAK5lHln3Xa-OjzO7QoE3U2THxJt59A7vE",
+      authDomain: "vidrio-aluminio-gomez.firebaseapp.com",
+      projectId: "vidrio-aluminio-gomez",
+      storageBucket: "vidrio-aluminio-gomez.firebasestorage.app",
+      messagingSenderId: "8738704393",
+      appId: "1:8738704393:web:d40335060e366f01a47cd8"
     };
 
-    // Inicializar Firebase + Firestore
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
     const form = document.getElementById("formComentario");
     const input = document.getElementById("nuevoComentario");
     const lista = document.getElementById("listaComentarios");
 
-    // Enviar comentario
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const texto = (input.value || "").trim();
       if (!texto) return;
 
       try {
-        await db.collection("comentarios").add({
+        await addDoc(collection(db, "comentarios"), {
           texto: texto,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          timestamp: serverTimestamp()
         });
         input.value = "";
       } catch (err) {
@@ -277,32 +206,30 @@
       }
     });
 
-    // Mostrar y eliminar comentarios
-    db.collection("comentarios")
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snap) => {
-        lista.innerHTML = "";
-        snap.forEach((doc) => {
-          const data = doc.data();
-          const div = document.createElement("div");
-          div.className = "comentario";
+    const q = query(collection(db, "comentarios"), orderBy("timestamp", "desc"));
+    onSnapshot(q, (snap) => {
+      lista.innerHTML = "";
+      snap.forEach((docSnap) => {
+        const data = docSnap.data();
+        const div = document.createElement("div");
+        div.className = "comentario";
 
-          const p = document.createElement("p");
-          p.textContent = data.texto || "";
+        const p = document.createElement("p");
+        p.textContent = data.texto || "";
 
-          const btn = document.createElement("button");
-          btn.textContent = "❌";
-          btn.onclick = async () => {
-            if (confirm("¿Eliminar este comentario?")) {
-              await db.collection("comentarios").doc(doc.id).delete();
-            }
-          };
+        const btn = document.createElement("button");
+        btn.textContent = "❌";
+        btn.onclick = async () => {
+          if (confirm("¿Eliminar este comentario?")) {
+            await deleteDoc(doc(db, "comentarios", docSnap.id));
+          }
+        };
 
-          div.appendChild(p);
-          div.appendChild(btn);
-          lista.appendChild(div);
-        });
+        div.appendChild(p);
+        div.appendChild(btn);
+        lista.appendChild(div);
       });
+    });
   </script>
 </body>
 </html>
