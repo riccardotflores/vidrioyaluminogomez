@@ -10,13 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 
   <style>
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
+    img { max-width: 100%; height: auto; display: block; }
 
-    /* 🔹 Sección de comentarios sobre el banner */
+    /* 🔹 Comentarios integrados en banner */
     .comentarios-overlay {
       position: absolute;
       top: 15%;
@@ -24,15 +20,14 @@
       transform: translateX(-50%);
       width: 90%;
       max-width: 600px;
-      max-height: 60vh; /* altura máxima según ventana */
+      max-height: 70%;
       overflow-y: auto;
       background: rgba(0, 0, 0, 0.6);
       color: white;
       padding: 10px;
       border-radius: 8px;
-      z-index: 10; /* solo sobre la imagen, no sobre el main */
+      z-index: 500; /* debajo del menú */
     }
-
     .comentario {
       background: rgba(255, 255, 255, 0.1);
       padding: 5px;
@@ -42,34 +37,16 @@
       justify-content: space-between;
       align-items: center;
     }
-    .comentario p {
-      margin: 0;
-      flex: 1;
-    }
+    .comentario p { margin: 0; flex: 1; }
     .comentario button {
-      background: red;
-      color: white;
-      border: none;
-      cursor: pointer;
-      padding: 3px 6px;
-      border-radius: 4px;
-      margin-left: 10px;
+      background: red; color: white; border: none;
+      cursor: pointer; padding: 3px 6px; border-radius: 4px; margin-left: 10px;
     }
-    textarea {
-      width: 100%;
-      margin-top: 10px;
-    }
-    #formComentario button {
-      margin-top: 5px;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
+    textarea { width: 100%; margin-top: 10px; }
+    #formComentario button { margin-top: 5px; padding: 5px 10px; cursor: pointer; }
 
-    /* 🔹 Mantener menú siempre visible arriba */
-    header {
-      position: relative;
-      z-index: 1000;
-    }
+    /* 🔹 El menú siempre visible arriba */
+    header { position: relative; z-index: 1000; }
   </style>
 </head>
 
@@ -176,12 +153,12 @@
   <script>
     // 🔹 Configuración de Firebase
     const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_DOMINIO.firebaseapp.com",
-      projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_PROJECT_ID.appspot.com",
-      messagingSenderId: "TU_MESSAGING_SENDER_ID",
-      appId: "TU_APP_ID"
+      apiKey: "AIzaSyAK5lHln3Xa-OjzO7QoE3U2THxJt59A7vE",
+      authDomain: "vidrio-aluminio-gomez.firebaseapp.com",
+      projectId: "vidrio-aluminio-gomez",
+      storageBucket: "vidrio-aluminio-gomez.firebasestorage.app",
+      messagingSenderId: "8738704393",
+      appId: "1:8738704393:web:d40335060e366f01a47cd8"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -191,6 +168,7 @@
     const input = document.getElementById("nuevoComentario");
     const lista = document.getElementById("listaComentarios");
 
+    // Enviar comentario
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const texto = (input.value || "").trim();
@@ -208,6 +186,7 @@
       }
     });
 
+    // Mostrar y eliminar comentarios en tiempo real
     db.collection("comentarios")
       .orderBy("timestamp", "desc")
       .onSnapshot((snap) => {
