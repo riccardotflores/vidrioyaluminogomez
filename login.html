@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Administrador</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Acceso Administrador</h2>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Correo" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <button type="submit">Ingresar</button>
+  </form>
+
+  <p id="mensaje"></p>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAK5lHln3Xa-OjzO7QoE3U2THxJt59A7vE",
+      authDomain: "vidrio-aluminio-gomez.firebaseapp.com",
+      projectId: "vidrio-aluminio-gomez",
+      storageBucket: "vidrio-aluminio-gomez.firebasestorage.app",
+      messagingSenderId: "8738704393",
+      appId: "1:8738704393:web:d40335060e366f01a47cd8"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const pass = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, pass)
+        .then(() => {
+          document.getElementById("mensaje").textContent = "Login exitoso ✅";
+          // Redirigir al index
+          window.location.href = "index.html";
+        })
+        .catch(err => {
+          document.getElementById("mensaje").textContent = "Error: " + err.message;
+        });
+    });
+  </script>
+</body>
+</html>
+
