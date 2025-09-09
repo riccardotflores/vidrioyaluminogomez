@@ -7,68 +7,35 @@
 
   <link rel="stylesheet" href="reset.css" />
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 
   <style>
-    img { max-width: 100%; height: auto; display: block; }
-    .video { max-width: 800px; margin: 30px auto; text-align: center; }
-    .video-frame { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
-    .video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-    .video-controles { margin-top: 10px; }
-    .video-controles button { padding: 10px 20px; margin: 0 10px; font-size: 16px; cursor: pointer; }
-
-    @media (max-width: 768px) {
-      .caja nav ul { display: flex; flex-direction: column; gap: 10px; align-items: center; padding: 0; }
-      .contenidoDiferenciales { display: flex; flex-direction: column; align-items: center; }
-      .imagenDiferencial { margin-top: 20px; width: 100%; }
-      .utensilios { width: 100%; margin: 20px auto; }
-      .tituloPrincipal { font-size: 1.4em; text-align: center; }
-      .mapaContenido iframe { height: 250px; }
-    }
-
-    /* Comentarios overlay sobre banner */
-    .comentarios-overlay {
+    /* 🔹 Botones de login en la esquina superior derecha */
+    .auth-buttons {
       position: absolute;
-      top: 15%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 600px;
-      max-height: 70%;
-      overflow-y: auto;
-      background: rgba(0, 0, 0, 0.6);
+      top: 10px;
+      right: 15px;
+      z-index: 2000;
+    }
+    .auth-buttons button {
+      margin-left: 5px;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      background: #007bff;
       color: white;
-      padding: 10px;
-      border-radius: 8px;
-      z-index: 500;
+      cursor: pointer;
     }
-    .comentario {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 5px;
-      margin: 5px 0;
-      border-radius: 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .auth-buttons button:hover {
+      background: #0056b3;
     }
-    .comentario p { margin: 0; flex: 1; }
-    .comentario button { background: red; color: white; border: none; cursor: pointer; padding: 3px 6px; border-radius: 4px; margin-left: 10px; }
-    textarea { width: 100%; margin-top: 10px; }
-    #formComentario button { margin-top: 5px; padding: 5px 10px; cursor: pointer; }
-
-    /* Botones login/logout */
-    .auth-buttons { position: absolute; top:10px; right:10px; z-index: 1000; }
-    .auth-buttons button { padding: 5px 10px; cursor: pointer; margin-left: 5px; }
-
-    /* Mantener menú encima */
-    header { position: relative; z-index: 1000; }
   </style>
 </head>
-
 <body>
   <header>
     <div class="caja">
-      <h1><img src="imagenes/logo.png" style="width: 50px; height: auto;" /></h1>
+      <h1>
+        <img src="imagenes/logo.png" style="width: 50px; height: auto;" />
+      </h1>
       <nav>
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -77,59 +44,23 @@
           <li><a href="videos.html">Videos</a></li>
         </ul>
       </nav>
-      <!-- Login/Logout admin -->
-      <div class="auth-buttons">
-        <button id="loginBtn">Iniciar sesión</button>
-        <button id="logoutBtn" style="display:none;">Cerrar sesión</button>
-      </div>
+    </div>
+    <!-- 🔹 Botones de autenticación -->
+    <div class="auth-buttons">
+      <button id="loginBtn">Iniciar sesión</button>
+      <button id="logoutBtn" style="display:none;">Cerrar sesión</button>
     </div>
   </header>
 
-  <!-- Banner con comentarios integrados -->
-  <div style="position: relative;">
-    <img class="banner" src="banner.jpg" alt="Banner principal" />
-    <div class="comentarios-overlay">
+  <main>
+    <!-- 🔹 Sección comentarios -->
+    <section class="comentarios">
       <h3>Comentarios</h3>
-      <form id="formComentario">
-        <textarea id="nuevoComentario" placeholder="Escribe tu comentario..."></textarea>
+      <form id="comentarioForm">
+        <textarea id="comentarioInput" placeholder="Escribe tu comentario..." required></textarea>
         <button type="submit">Enviar</button>
       </form>
-      <div id="listaComentarios"></div>
-    </div>
-  </div>
-
-  <main>
-    <!-- resto de secciones se mantiene igual -->
-    <section class="principal">
-      <h2 class="tituloPrincipal">Sobre Vidrio y Aluminio Gomez</h2>
-      <img class="utensilios" src="utensilios[1].jpg" alt="utensilios de un barbero">
-      <p>Ubicada en San Pablo Autopan, <strong>Soluciones en Vidrio y Aluminio Gomez</strong> trae para el mercado lo mejor para su hogar y negocio. Fundada en 2008, cuenta con cancelería de aluminio, fachadas y sistemas de cristal templado, entre otras cosas.</p>
-      <p id="mision"><em>Nuestra misión es: <strong>"Proporcionar eficiencia, economía y calidad a nuestros clientes".</strong></em></p>
-      <p>Ofrecemos profesionales experimentados que están constantemente observando los cambios y movimiento en el mundo de la cancelería, para así ofrecer a nuestros clientes las últimas tendencias. La constante actualización por parte de nuestros trabajadores nos hace brindar excelencia y agilidad, garantizando calidad y satisfacción.</p>
-    </section>
-
-    <section class="mapa">
-      <h3 class="tituloPrincipal">Nuestra Ubicación</h3>
-      <p>Nuestro establecimiento está ubicado en San Pablo Autopan</p>
-      <div class="mapaContenido">
-        <iframe src="https://www.google.com/maps/embed?pb=!4v1755183114469!6m8!1m7!1sQDyybB8MXeXDPR4yKU0Dsw!2m2!1d19.37172830916202!2d-99.65900973173885!3f253.42477900915722!4f-0.37270352146015284!5f0.7820865974627469" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-    </section>
-
-    <section class="diferenciales">
-      <h3 class="tituloPrincipal">Nuestro Distintivo</h3>
-      <div class="contenidoDiferenciales">
-        <ul class="listaDiferenciales">
-          <li class="items">Atención personalizada</li>
-          <li class="items">Presupuestos flexibles</li>
-          <li class="items">Localización</li>
-          <li class="items">Profesionales calificados</li>
-          <li class="items">Puntualidad</li>
-          <li class="items">Limpieza e higiene</li>
-          <li class="items">Trabajos garantizados</li>
-        </ul>
-        <img src="diferenciales.jpg" class="imagenDiferencial" alt="imagen de trabajos" />
-      </div>
+      <ul id="comentariosList"></ul>
     </section>
   </main>
 
@@ -138,24 +69,112 @@
     <p>Copyright: Todo el material expuesto es propiedad de Vidrio y Aluminio Gomez 2025</p>
   </footer>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+  <!-- 🔹 Formulario emergente de login -->
+  <div id="loginForm" style="display:none; position:absolute; top:50px; right:10px; background:white; color:black; padding:15px; border:1px solid #ccc; border-radius:8px; z-index:2000;">
+    <h3>Login Administrador</h3>
+    <input type="email" id="adminEmail" placeholder="Correo" style="width:100%; margin-bottom:8px;">
+    <input type="password" id="adminPassword" placeholder="Contraseña" style="width:100%; margin-bottom:8px;">
+    <button id="submitLogin">Ingresar</button>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
   <script>
-    // 🔹 Config Firebase
+    // 🔹 Configuración de Firebase
     const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_DOMINIO.firebaseapp.com",
-      projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_PROJECT_ID.appspot.com",
-      messagingSenderId: "TU_MESSAGING_SENDER_ID",
-      appId: "TU_APP_ID"
+      apiKey: "AIzaSyAK5lHln3Xa-OjzO7QoE3U2THxJt59A7vE",
+      authDomain: "vidrio-aluminio-gomez.firebaseapp.com",
+      projectId: "vidrio-aluminio-gomez",
+      storageBucket: "vidrio-aluminio-gomez.firebasestorage.app",
+      messagingSenderId: "8738704393",
+      appId: "1:8738704393:web:d40335060e366f01a47cd8"
     };
-    const app = firebase.initializeApp(firebaseConfig);
+
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const auth = firebase.auth();
 
-    //
+    const comentarioForm = document.getElementById("comentarioForm");
+    const comentarioInput = document.getElementById("comentarioInput");
+    const comentariosList = document.getElementById("comentariosList");
+
+    // 🔹 Guardar comentario en Firestore
+    comentarioForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const texto = comentarioInput.value.trim();
+      if (texto !== "") {
+        await db.collection("comentarios").add({
+          texto,
+          fecha: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        comentarioInput.value = "";
+      }
+    });
+
+    // 🔹 Mostrar comentarios en tiempo real
+    db.collection("comentarios").orderBy("fecha", "desc").onSnapshot((snapshot) => {
+      comentariosList.innerHTML = "";
+      snapshot.forEach((doc) => {
+        const li = document.createElement("li");
+        li.textContent = doc.data().texto;
+
+        // 🔹 Botón eliminar solo visible si admin logueado
+        if (auth.currentUser) {
+          const btn = document.createElement("button");
+          btn.textContent = "Eliminar";
+          btn.style.marginLeft = "10px";
+          btn.onclick = async () => {
+            await db.collection("comentarios").doc(doc.id).delete();
+          };
+          li.appendChild(btn);
+        }
+
+        comentariosList.appendChild(li);
+      });
+    });
+
+    // 🔹 Manejo de login
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginForm = document.getElementById("loginForm");
+    const submitLogin = document.getElementById("submitLogin");
+
+    loginBtn.addEventListener("click", () => {
+      loginForm.style.display = (loginForm.style.display === "none") ? "block" : "none";
+    });
+
+    submitLogin.addEventListener("click", async () => {
+      const email = document.getElementById("adminEmail").value;
+      const password = document.getElementById("adminPassword").value;
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        alert("✅ Sesión iniciada como administrador");
+        loginForm.style.display = "none";
+      } catch (error) {
+        alert("❌ Error: " + error.message);
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await auth.signOut();
+      alert("Sesión cerrada");
+    });
+
+    // 🔹 Estado de autenticación
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+      } else {
+        loginBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
 
