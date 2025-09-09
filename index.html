@@ -28,6 +28,32 @@
     .auth-buttons button:hover {
       background: #0056b3;
     }
+    /* 🔹 Caja emergente login */
+    #loginForm {
+      display:none;
+      position:absolute;
+      top:50px;
+      right:10px;
+      background:white;
+      color:black;
+      padding:15px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      z-index:2000;
+    }
+    #loginForm input {
+      width:100%;
+      margin-bottom:8px;
+      padding:6px;
+    }
+    #loginForm button {
+      width:100%;
+      padding:6px;
+      background:#28a745;
+      color:white;
+      border:none;
+      border-radius:5px;
+    }
   </style>
 </head>
 <body>
@@ -53,7 +79,9 @@
   </header>
 
   <main>
-    <!-- 🔹 Sección comentarios -->
+    <!-- 🔹 Aquí sigue todo tu contenido (banner, secciones, videos, etc.) -->
+
+    <!-- 🔹 Sección de comentarios -->
     <section class="comentarios">
       <h3>Comentarios</h3>
       <form id="comentarioForm">
@@ -70,10 +98,10 @@
   </footer>
 
   <!-- 🔹 Formulario emergente de login -->
-  <div id="loginForm" style="display:none; position:absolute; top:50px; right:10px; background:white; color:black; padding:15px; border:1px solid #ccc; border-radius:8px; z-index:2000;">
+  <div id="loginForm">
     <h3>Login Administrador</h3>
-    <input type="email" id="adminEmail" placeholder="Correo" style="width:100%; margin-bottom:8px;">
-    <input type="password" id="adminPassword" placeholder="Contraseña" style="width:100%; margin-bottom:8px;">
+    <input type="email" id="adminEmail" placeholder="Correo">
+    <input type="password" id="adminPassword" placeholder="Contraseña">
     <button id="submitLogin">Ingresar</button>
   </div>
 
@@ -83,7 +111,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
   <script>
-    // 🔹 Configuración de Firebase
+    // 🔹 Configuración Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAK5lHln3Xa-OjzO7QoE3U2THxJt59A7vE",
       authDomain: "vidrio-aluminio-gomez.firebaseapp.com",
@@ -121,7 +149,7 @@
         const li = document.createElement("li");
         li.textContent = doc.data().texto;
 
-        // 🔹 Botón eliminar solo visible si admin logueado
+        // 🔹 Botón eliminar solo si admin logueado
         if (auth.currentUser) {
           const btn = document.createElement("button");
           btn.textContent = "Eliminar";
@@ -136,7 +164,7 @@
       });
     });
 
-    // 🔹 Manejo de login
+    // 🔹 Manejo login/logout
     const loginBtn = document.getElementById("loginBtn");
     const logoutBtn = document.getElementById("logoutBtn");
     const loginForm = document.getElementById("loginForm");
@@ -164,7 +192,7 @@
       alert("Sesión cerrada");
     });
 
-    // 🔹 Estado de autenticación
+    // 🔹 Cambiar botones según estado
     auth.onAuthStateChanged(user => {
       if (user) {
         loginBtn.style.display = "none";
