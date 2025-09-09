@@ -303,4 +303,55 @@ th {
     height: auto;
   }
 }
+/* 🔹 Ajustes responsivos para header en móviles */
+@media screen and (max-width: 480px) {
+  header {
+    text-align: center;
+    padding: 15px 0;
+  }
+
+  header .caja {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  header h1 img {
+    max-width: 80px; /* 🔹 logo más pequeño */
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+  }
+
+  nav {
+    position: static;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  nav ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  nav li {
+    display: inline-block;
+    margin: 0 8px;
+  }
+
+  nav a {
+    font-size: 16px; /* 🔹 tamaño reducido para que quepa */
+  }
+
+  /* Botón de login */
+  #login-section {
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  #login-section button {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}
 
